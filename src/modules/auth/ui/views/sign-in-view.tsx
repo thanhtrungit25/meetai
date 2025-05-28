@@ -5,6 +5,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OctagonAlertIcon } from "lucide-react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 import { useForm } from "react-hook-form";
 import { authClient } from "@/lib/auth-client";
@@ -47,6 +48,7 @@ export const SignInView = () => {
       {
         email: data.email,
         password: data.password,
+        callbackURL: "/"
       },
       {
         onSuccess: () => {
@@ -58,6 +60,20 @@ export const SignInView = () => {
       }
     );
   };
+
+  const onSocial = (provider: "github" | "google") => {
+    setError(null);
+
+    authClient.signIn.social({
+      provider: provider,
+      callbackURL: '/'
+    }, {
+      onSuccess: () => {},
+      onError: ({ error }) => {
+        setError(error.message);
+      },
+    })
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -122,11 +138,21 @@ export const SignInView = () => {
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Button variant="outline" type="button" className="w-full">
-                      Google
+                    <Button
+                      onClick={() => onSocial('google')}
+                      variant="outline"
+                      type="button"
+                      className="w-full"
+                    >
+                      <FaGoogle />
                     </Button>
-                    <Button variant="outline" type="button" className="w-full">
-                      Github
+                    <Button
+                      onClick={() => onSocial('github')}
+                      variant="outline"
+                      type="button"
+                      className="w-full"
+                    >
+                      <FaGithub />
                     </Button>
                   </div>
                   <div className="text-center text-sm">
