@@ -10,7 +10,7 @@ interface Props {
 export default function DashboardLayout({ children }: Props) {
   return <SidebarProvider>
     <DashboardSidebar />
-    <main>
+    <main className="flex flex-col h-screen w-screen bg-muted">
       <DashboardNavbar />
       {children}
     </main>
