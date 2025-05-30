@@ -64,11 +64,11 @@ export default function AgentIdViewHeader({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={onEdit}>
             <PencilIcon className="size-4 text-black" />
             Edit
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={onRemove}>
             <TrashIcon className="size-4 text-black" />
             Delete
           </DropdownMenuItem>
