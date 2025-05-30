@@ -22,7 +22,6 @@ type Props = {
   onSearch?: (value: string) => void;
   value: string;
   placeholder?: string;
-  isSearchable?: boolean;
   className?: string;
 }
 
@@ -30,7 +29,6 @@ export const CommandSelect = ({
   options,
   value,
   placeholder = "Select an option",
-  isSearchable,
   className,
   onSelect,
   onSearch,
@@ -38,6 +36,11 @@ export const CommandSelect = ({
 
   const [open, setOpen] = useState(false);
   const selectedOption = options.find(option => option.value === value);
+
+  const handleOpenChange = (open: boolean) => {
+    onSearch?.("");
+    setOpen(open);
+  }
 
   return (
     <>
@@ -57,7 +60,7 @@ export const CommandSelect = ({
       </Button>
       <CommandResponsiveDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={handleOpenChange}
         shouldFilter={!onSearch}
       >
         <CommandInput placeholder="Search..." onValueChange={onSearch} />
