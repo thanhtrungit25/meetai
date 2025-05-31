@@ -20,7 +20,6 @@ export default async function MeetingsPage({
   searchParams
 }: Props) {
   const filters = await loadSearchParams(searchParams);
-  console.log("🦜 filters", filters);
 
   const session = await auth.api.getSession({
     headers: await headers(),
