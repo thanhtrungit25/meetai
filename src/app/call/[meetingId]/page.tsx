@@ -1,11 +1,14 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
 import { auth } from "@/lib/auth";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import CallView from "@/modules/call/ui/views/call-view";
+import CallView, { CallViewError, CallViewLoading } from "@/modules/call/ui/views/call-view";
 
 type Props = {
   params: Promise<{
@@ -33,7 +36,11 @@ export default async function MeetingCallPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CallView meetingId={meetingId} />
+      <Suspense fallback={<CallViewLoading />}>
+        <ErrorBoundary fallback={<CallViewError />}>
+          <CallView meetingId={meetingId} />
+        </ErrorBoundary>
+      </Suspense>
     </HydrationBoundary>
   )
 }

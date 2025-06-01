@@ -4,6 +4,7 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { ErrorState } from "@/components/error-state";
+import { LoadingState } from "@/components/loading-state";
 import { CallProvider } from "../components/call-provider";
 
 type Props = {
@@ -31,5 +32,23 @@ export default function CallView({
 
   return (
     <CallProvider meetingId={meetingId} meetingName={data.name} />
+  );
+};
+
+export const CallViewLoading = () => {
+  return (
+    <LoadingState
+      title="Loading Agents"
+      descripiton="This may be take a seconds"
+    />
+  );
+};
+
+export const CallViewError = () => {
+  return (
+    <ErrorState
+      title="Error Loading Agents"
+      descripiton="Something went wrong"
+    />
   );
 };
