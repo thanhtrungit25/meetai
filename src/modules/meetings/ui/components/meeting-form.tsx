@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { toast } from "sonner";
 import { meetingsInsertSchema } from "../../schemas";
@@ -36,6 +37,7 @@ export default function MeetingForm({
   onCancel,
   onSuccess,
 }: Props) {
+  const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -52,10 +54,14 @@ export default function MeetingForm({
       onSuccess: async (data) => {
         await queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
 
-        onSuccess?.(data.id);
+        onSuccess?.(data.id); 
       },
       onError: (error) => {
         toast.error(error.message);
+
+        if (error.data?.code === "FORBIDDEN") {
+          router.push("/upgrade");
+        }
       },
     })
   );
@@ -64,6 +70,7 @@ export default function MeetingForm({
     trpc.meetings.update.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
+        await queryClient.invalidateQueries(trpc.premium.getFreeUsage.queryOptions());
 
         if (initialValues?.id) {
           await queryClient.invalidateQueries(

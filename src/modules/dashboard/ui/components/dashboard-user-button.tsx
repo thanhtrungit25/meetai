@@ -67,14 +67,14 @@ export function DashboardUserButton() {
           <DrawerFooter>
             <Button
               variant='outline'
-              onClick={() => {}}
+              onClick={() => authClient.customer.portal()}
             >
               <CreditCardIcon className="size-4" />
               Billing
             </Button>
             <Button
               variant='outline'
-              onClick={() => {}}
+              onClick={onLogout}
             >
               <LogOutIcon className="size-4" />
               Logout
@@ -121,7 +121,7 @@ export function DashboardUserButton() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center justify-between cursor-pointer">
+        <DropdownMenuItem onClick={() => authClient.customer.portal()} className="flex items-center justify-between cursor-pointer">
           Billing
           <CreditCardIcon className="size-4" />
         </DropdownMenuItem>

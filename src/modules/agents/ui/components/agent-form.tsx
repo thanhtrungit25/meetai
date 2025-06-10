@@ -2,7 +2,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { agentsInsertSchema } from "../../schemas";
 import { AgentGetOne } from "../../types";
-
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTRPC } from "@/trpc/client";
@@ -32,6 +32,7 @@ export default function AgentForm({
   onCancel,
   onSuccess,
 }: Props) {
+  const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -39,11 +40,16 @@ export default function AgentForm({
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        await queryClient.invalidateQueries(trpc.premium.getFreeUsage.queryOptions());
 
         onSuccess?.();
       },
       onError: (error) => {
         toast.error(error.message);
+
+        if (error.data?.code === "FORBIDDEN") {
+          router.push("/upgrade");
+        }
       },
     })
   );
