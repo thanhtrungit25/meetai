@@ -3,7 +3,7 @@ import { and, desc, eq, count, getTableColumns, ilike, sql, inArray } from "driz
 import { db } from "@/db";
 import { agents, meetings, user } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { createTRPCRouter, premiumProcedure, protectedProcedure } from "@/trpc/init";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
 import { generatedAvatarUri } from "@/lib/avatar";
 import JSONL from "jsonl-parse-stringify";
@@ -177,7 +177,7 @@ export const meetingsRouter = createTRPCRouter({
 
       return updatedMeeting;
     }),
-  create: protectedProcedure
+  create: premiumProcedure("meetings")
     .input(meetingsInsertSchema)
     .mutation(async ({ input, ctx }) => {
       const [createdMeeting] = await db

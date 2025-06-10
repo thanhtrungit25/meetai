@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import {DashboardUserButton} from "./dashboard-user-button";
+import { DashboardTrial } from "./dashboard-trial";
 
 const firstSenction = [
   {
@@ -115,7 +116,8 @@ export default function DashboardSidebar(){
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="text-white">
+        <DashboardTrial />
         <DashboardUserButton />
       </SidebarFooter>
     </Sidebar>
