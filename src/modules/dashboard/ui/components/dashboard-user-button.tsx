@@ -14,7 +14,6 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
